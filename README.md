@@ -1,3 +1,8 @@
+[//]: # ([![Crates.io]&#40;https://img.shields.io/crates/v/ankiconnect-rs.svg&#41;]&#40;https://crates.io/crates/ankiconnect-rs&#41;)
+[//]: # ([![Documentation]&#40;https://docs.rs/ankiconnect-rs/badge.svg&#41;]&#40;https://docs.rs/ankiconnect-rs/&#41;)
+[![Codecov](https://codecov.io/github/btrkeks/ankiconnect-rs/coverage.svg?branch=master)](https://codecov.io/gh/btrkeks/ankiconnect-rs)
+[![Dependency status](https://deps.rs/repo/github/btrkeks/ankiconnect-rs/status.svg)](https://deps.rs/repo/github/btrkeks/ankiconnect-rs)
+
 # ankiconnect-rs
 
 A work-in-progress Rust crate for interacting with [AnkiConnect](https://foosoft.net/projects/anki-connect/),
