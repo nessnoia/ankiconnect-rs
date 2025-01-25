@@ -1,5 +1,5 @@
-[//]: # ([![Crates.io]&#40;https://img.shields.io/crates/v/ankiconnect-rs.svg&#41;]&#40;https://crates.io/crates/ankiconnect-rs&#41;)
-[//]: # ([![Documentation]&#40;https://docs.rs/ankiconnect-rs/badge.svg&#41;]&#40;https://docs.rs/ankiconnect-rs/&#41;)
+[![Crates.io](https://img.shields.io/crates/v/ankiconnect-rs.svg)](https://crates.io/crates/ankiconnect-rs)
+[![Documentation](https://docs.rs/ankiconnect-rs/badge.svg)](https://docs.rs/ankiconnect-rs/)
 [![Codecov](https://codecov.io/github/btrkeks/ankiconnect-rs/coverage.svg?branch=master)](https://codecov.io/gh/btrkeks/ankiconnect-rs)
 [![Dependency status](https://deps.rs/repo/github/btrkeks/ankiconnect-rs/status.svg)](https://deps.rs/repo/github/btrkeks/ankiconnect-rs)
 
