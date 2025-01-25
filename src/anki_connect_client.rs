@@ -1,5 +1,5 @@
 use crate::anki_card::{AnkiCard, AnkiDeck, AnkiModel, AnkiModelIdentifier};
-use crate::error::{AnkiConnectError, AnkiRequestError, parse_anki_connect_error};
+use crate::error::{parse_anki_connect_error, AnkiConnectError, AnkiRequestError};
 use crate::request_sender::{AnkiConnectRequestSender, HttpAnkiConnectRequestSender};
 use crate::types::{CardsReordering, DuplicateScope};
 use serde::{Deserialize, Serialize};
@@ -591,11 +591,10 @@ mod tests {
 
         // Assert
         mock.assert();
-        assert_eq!(result.unwrap(), [
-            1494723142483u64,
-            1494703460437u64,
-            1494703479525u64
-        ]);
+        assert_eq!(
+            result.unwrap(),
+            [1494723142483u64, 1494703460437u64, 1494703479525u64]
+        );
     }
 
     #[test]
@@ -695,11 +694,10 @@ mod tests {
 
         // Assert
         mock.assert();
-        assert_eq!(result.unwrap(), [
-            1494723142483u64,
-            1494703460437u64,
-            1494703479525u64
-        ]);
+        assert_eq!(
+            result.unwrap(),
+            [1494723142483u64, 1494703460437u64, 1494703479525u64]
+        );
     }
 
     #[test]

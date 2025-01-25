@@ -1,5 +1,5 @@
+use crate::anki_card::AnkiModelIdentifier;
 use thiserror::Error;
-use crate::anki_card::{AnkiModelIdentifier};
 
 #[derive(Error, Debug)]
 pub enum AnkiConnectError {
