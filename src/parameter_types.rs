@@ -1,5 +1,5 @@
 use serde::Serialize;
-use std::path::{PathBuf};
+use std::path::PathBuf;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -65,7 +65,10 @@ pub enum DuplicateScope {
 }
 
 pub enum MediaSource {
+    /// An OS path to the file
     Path(PathBuf),
+    /// A URL to the file
     Url(String),
+    /// The file as a base64 encoded string
     Base64(String),
 }

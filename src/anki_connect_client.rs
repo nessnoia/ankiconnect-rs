@@ -2,14 +2,14 @@ use crate::anki_card::{AnkiCard, AnkiDeck, AnkiField, AnkiModel, AnkiModelIdenti
 use crate::anki_connect_request::{
     AddNoteOptions, AddNoteParams, AnkiConnectRequest, CreateDeckParams, FindCardsParams,
     FindModelsByIdParams, GuiBrowseParams, Media, MediaSourceDTO, ModelFieldNamesParams, Note,
+    StoreMediaFileParams,
 };
 use crate::anki_search_query::AnkiSearchQuery;
 use crate::error::{parse_anki_connect_error, AnkiConnectError, AnkiRequestError};
-use crate::parameter_types::{CardsReordering, DuplicateScope};
+use crate::parameter_types::{CardsReordering, DuplicateScope, MediaSource};
 use crate::request_sender::{AnkiConnectRequestSender, HttpAnkiConnectRequestSender};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::collections::HashMap;
-use std::path::Path;
 
 const ANKI_CONNECT_API_VERSION: u8 = 6;
 
@@ -125,101 +125,24 @@ impl<T: AnkiConnectRequestSender> AnkiClient<T> {
         self.request_sender.send_request(request)?.into_result()
     }
 
-    // TODO:
-    // pub fn store_media_file(
-    //     &self,
-    //     source: MediaSource<'_>,
-    //     filename: &str,
-    //     overwrite: bool,
-    // ) -> Result<String, AnkiRequestError> {
-    //     todo!()
-    // }
-
-    // TODO: Instead of having 3 functions, create a MediaFile enum
-    /// Stores the file at `path` inside Anki's media folder.
+    /// Stores the file pointed to by `source` inside Anki's media folder.
     /// To prevent Anki from removing files not used by any cards (e.g. for configuration files), prefix the filename with an underscore.
     /// These files are still synchronized to AnkiWeb.
     /// Set `overwrite` to false in order to prevent Anki from overwriting files with the same name.
     ///
-    /// Note: The file referenced by `path` needs to be on the same device as Anki.
-    ///
     /// Returns the filename that was used by Anki. Can be different from `filename` if `overwrite` is set to false.
-    pub fn store_media_file_from_path<P: AsRef<Path>>(
+    pub fn store_media_file(
         &self,
-        path: P,
+        source: MediaSource,
         filename: &str,
         overwrite: bool,
     ) -> Result<String, AnkiRequestError> {
-        let path_str = path.as_ref().to_string_lossy();
-
-        #[derive(Serialize)]
-        #[serde(rename_all = "camelCase")]
-        struct StoreMediaFileFromPathParams<'a> {
-            filename: &'a str,
-            path: &'a str,
-            delete_existing: bool,
-        }
-
         let request = AnkiConnectRequest {
             action: "storeMediaFile",
             version: ANKI_CONNECT_API_VERSION,
-            params: Some(StoreMediaFileFromPathParams {
+            params: Some(StoreMediaFileParams {
+                media_source: MediaSourceDTO::from_source(&source),
                 filename,
-                path: &path_str,
-                delete_existing: overwrite,
-            }),
-        };
-
-        self.request_sender.send_request(request)?.into_result()
-    }
-
-    pub fn store_media_file_from_url(
-        &self,
-        url: &str,
-        filename: &str,
-        overwrite: bool,
-    ) -> Result<String, AnkiRequestError> {
-        #[derive(Serialize)]
-        #[serde(rename_all = "camelCase")]
-        struct StoreMediaFileFromUrlParams<'a> {
-            filename: &'a str,
-            url: &'a str,
-            delete_existing: bool,
-        }
-
-        let request = AnkiConnectRequest {
-            action: "storeMediaFile",
-            version: ANKI_CONNECT_API_VERSION,
-            params: Some(StoreMediaFileFromUrlParams {
-                filename,
-                url,
-                delete_existing: overwrite,
-            }),
-        };
-
-        self.request_sender.send_request(request)?.into_result()
-    }
-
-    pub fn store_media_file_from_base64(
-        &self,
-        data: &str,
-        filename: &str,
-        overwrite: bool,
-    ) -> Result<String, AnkiRequestError> {
-        #[derive(Serialize)]
-        #[serde(rename_all = "camelCase")]
-        struct StoreMediaFileFromBase64Params<'a> {
-            filename: &'a str,
-            data: &'a str,
-            delete_existing: bool,
-        }
-
-        let request = AnkiConnectRequest {
-            action: "storeMediaFile",
-            version: ANKI_CONNECT_API_VERSION,
-            params: Some(StoreMediaFileFromBase64Params {
-                filename,
-                data,
                 delete_existing: overwrite,
             }),
         };

@@ -389,8 +389,10 @@ fn test_store_media_file_from_path_request() {
 
     let mock_client = AnkiClient::new(&server.host(), server.port());
 
+    let media_source = MediaSource::Path("/path/to/file".into());
+
     // Act
-    let result = mock_client.store_media_file_from_path("/path/to/file", "_hello.txt", true);
+    let result = mock_client.store_media_file(media_source, "_hello.txt", true);
 
     // Assert
     mock.assert();
@@ -421,8 +423,10 @@ fn test_store_media_file_from_url_request() {
 
     let mock_client = AnkiClient::new(&server.host(), server.port());
 
+    let media_source = MediaSource::Url("https://url.to.file".to_string());
+
     // Act
-    let result = mock_client.store_media_file_from_url("https://url.to.file", "_hello.txt", false);
+    let result = mock_client.store_media_file(media_source, "_hello.txt", false);
 
     // Assert
     mock.assert();
@@ -453,9 +457,10 @@ fn test_store_media_file_from_base64_request() {
 
     let mock_client = AnkiClient::new(&server.host(), server.port());
 
+    let media_source = MediaSource::Base64("SGVsbG8sIHdvcmxkIQ==".to_string());
+
     // Act
-    let result =
-        mock_client.store_media_file_from_base64("SGVsbG8sIHdvcmxkIQ==", "_hello.txt", false);
+    let result = mock_client.store_media_file(media_source, "_hello.txt", false);
 
     // Assert
     mock.assert();

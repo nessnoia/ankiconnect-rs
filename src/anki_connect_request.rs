@@ -127,13 +127,11 @@ impl<'a> MediaSourceDTO<'a> {
     }
 }
 
-// TODO:
-// #[derive(Serialize)]
-// #[serde(rename_all = "camelCase")]
-// pub(crate) struct StoreMediaFileParams<'a> {
-//     filename: &'a str,
-//     path: &'a str,
-//     // url: &'a str
-//     // data: &'a str
-//     delete_existing: bool,
-// }
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct StoreMediaFileParams<'a> {
+    #[serde(flatten)]
+    pub(crate) media_source: MediaSourceDTO<'a>,
+    pub(crate) filename: &'a str,
+    pub(crate) delete_existing: bool,
+}
