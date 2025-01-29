@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::path::{PathBuf};
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -51,9 +52,9 @@ pub enum ColumnIdentifier {
 #[derive(Serialize)]
 pub struct CardsReordering {
     #[serde(rename = "order")]
-    pub(crate) order: SortOrder,
+    pub order: SortOrder,
     #[serde(rename = "columnId")]
-    pub(crate) column_id: ColumnIdentifier,
+    pub column_id: ColumnIdentifier,
 }
 
 #[derive(Serialize)]
@@ -61,4 +62,10 @@ pub struct CardsReordering {
 pub enum DuplicateScope {
     Deck,
     Collection,
+}
+
+pub enum MediaSource {
+    Path(PathBuf),
+    Url(String),
+    Base64(String),
 }

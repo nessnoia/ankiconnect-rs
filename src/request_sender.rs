@@ -1,9 +1,10 @@
-use crate::anki_connect_client::{AnkiConnectRequest, AnkiConnectResponse};
+use crate::anki_connect_client::AnkiConnectResponse;
+use crate::anki_connect_request::AnkiConnectRequest;
 use crate::error::AnkiRequestError;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-pub trait AnkiConnectRequestSender {
+pub(crate) trait AnkiConnectRequestSender {
     fn send_request<ReqParam: Serialize, ResType: DeserializeOwned>(
         &self,
         request: AnkiConnectRequest<ReqParam>,
