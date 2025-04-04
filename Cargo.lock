@@ -28,9 +28,9 @@ dependencies = [
 
 [[package]]
 name = "ankiconnect-rs"
-version = "0.1.1"
+version = "1.0.0"
 dependencies = [
- "base64 0.22.1",
+ "anyhow",
  "html-escape",
  "httpmock",
  "serde",
@@ -38,6 +38,12 @@ dependencies = [
  "thiserror 2.0.11",
  "ureq",
 ]
+
+[[package]]
+name = "anyhow"
+version = "1.0.97"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcfed56ad506cb2c684a14971b8861fdc3baaaae314b9e5f9bb532cbe3ba7a4f"
 
 [[package]]
 name = "ascii-canvas"
@@ -1311,9 +1317,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.23.21"
+version = "0.23.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f287924602bf649d949c63dc8ac8b235fa5387d394020705b80c4eb597ce5b8"
+checksum = "47796c98c480fce5406ef69d1c76378375492c3b0a0de587be0c1d9feb12f395"
 dependencies = [
  "log",
  "once_cell",
@@ -1335,9 +1341,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-pki-types"
-version = "1.10.1"
+version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2bf47e6ff922db3825eb750c4e2ff784c6ff8fb9e13046ef6a1d1c5401b0b37"
+checksum = "917ce264624a4b4db1c364dcc35bfca9ded014d0a958cd47ad3e960e988ea51c"
 
 [[package]]
 name = "rustls-webpki"
@@ -1714,16 +1720,14 @@ checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "ureq"
-version = "3.0.0-rc5"
+version = "3.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77f9bd1d03fe3bf87c90b115a0e09e22535cbcff3f8d0a6487524f006325f173"
+checksum = "2f85f9ee53e53fd3f65b73dc51c5a782785d1a6cc381a06652a1141649537ad8"
 dependencies = [
  "base64 0.22.1",
- "cc",
  "cookie_store",
  "flate2",
  "log",
- "once_cell",
  "percent-encoding",
  "rustls",
  "rustls-pemfile",
@@ -1737,15 +1741,14 @@ dependencies = [
 
 [[package]]
 name = "ureq-proto"
-version = "0.2.3"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a27729fd2c15426f48992a911ce31bd1f29c1cd0898c2c86b410d24f51c99eb3"
+checksum = "64adb55464bad1ab1aa9229133d0d59d2f679180f4d15f0d9debe616f541f25e"
 dependencies = [
  "base64 0.22.1",
  "http 1.2.0",
  "httparse",
  "log",
- "url",
 ]
 
 [[package]]
@@ -1903,9 +1906,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "0.26.7"
+version = "0.26.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d642ff16b7e79272ae451b7322067cdc17cadf68c23264be9d94a32319efe7e"
+checksum = "2210b291f7ea53617fbafcc4939f10914214ec15aace5ba62293a668f322c5c9"
 dependencies = [
  "rustls-pki-types",
 ]
