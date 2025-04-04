@@ -21,6 +21,8 @@ fn main() -> Result<()> {
         print_deck_info(i + 1, deck);
 
         // Try to get deck statistics
+        // Note that in a real implementation you should instead use `get_stats` (all at once)
+        // instead of one by one in a loop
         match client.decks().get_stat(deck.name()) {
             Ok(stats) => {
                 println!("   Statistics:");

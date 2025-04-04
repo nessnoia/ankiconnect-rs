@@ -56,7 +56,7 @@
 
 // Re-export key types for a clean public API
 pub use builders::{NoteBuilder, QueryBuilder};
-pub use client::AnkiClient;
+pub use client::{AnkiClient, DuplicateScope};
 pub use error::{AnkiConnectError, AnkiError, NoteError, Result};
 pub use models::{
     Card, CardId, Deck, DeckId, Field, FieldMedia, Media, MediaSource, MediaType, Model, Note,

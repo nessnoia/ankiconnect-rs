@@ -43,7 +43,7 @@ impl Query {
     /// Creates a new query from a string
     ///
     /// This is mostly for internal use. Prefer using `QueryBuilder` to construct queries.
-    pub(crate) fn new(query_string: String) -> Self {
+    pub fn custom(query_string: String) -> Self {
         Self { query_string }
     }
 
@@ -256,7 +256,7 @@ impl QueryBuilder {
 
     /// Builds the final query
     pub fn build(self) -> Query {
-        Query::new(self.parts.join(" "))
+        Query::custom(self.parts.join(" "))
     }
 
     /// Helper method to add a part to the query

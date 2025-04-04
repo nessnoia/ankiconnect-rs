@@ -12,6 +12,7 @@ mod models;
 pub mod request;
 
 pub use anki_client::AnkiClient;
+pub use self::cards::DuplicateScope;
 
 // Re-export domain-specific clients
 pub(crate) use self::cards::CardClient;

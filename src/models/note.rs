@@ -34,13 +34,6 @@ impl Note {
         tags: HashSet<String>,
         media: Vec<FieldMedia>,
     ) -> std::result::Result<Self, NoteError> {
-        // Check that all required fields have values
-        for field in model.fields() {
-            if !field_values.contains_key(field.name()) {
-                return Err(NoteError::MissingField(field.name().to_string()));
-            }
-        }
-
         // Check that all provided fields actually exist in the model
         for field_name in field_values.keys() {
             if model.get_field(field_name).is_none() {

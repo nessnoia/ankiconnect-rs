@@ -1,6 +1,7 @@
-use ankiconnect_rs::{AnkiClient, Result};
+use ankiconnect_rs::{AnkiClient, QueryBuilder, Result};
 use httpmock::prelude::*;
 use serde_json::json;
+use ankiconnect_rs::builders::Query;
 
 // Helper function to create a mock AnkiClient connected to the given mock server
 fn create_mock_client(server: &MockServer) -> AnkiClient {
@@ -32,7 +33,7 @@ fn test_find_cards() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let cards = client.cards().find("deck:current");
+    let cards = client.cards().find(&Query::custom("deck:current".to_string()));
 
     // Assert
     mock.assert();

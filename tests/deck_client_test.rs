@@ -199,25 +199,6 @@ fn test_delete_deck() -> Result<()> {
     // Arrange
     let server = MockServer::start();
 
-    // Mock for getting all decks
-    let get_decks_mock = server.mock(|when, then| {
-        when.method(POST).path("/").json_body(json!({
-            "action": "deckNamesAndIds",
-            "version": 6
-        }));
-
-        then.status(200)
-            .header("content-type", "application/json")
-            .json_body(json!({
-                "result": {
-                    "Default": 1,
-                    "Japanese::JLPT N5": 1494723142473_u64,
-                    "Easy Spanish": 1494723142484_u64
-                },
-                "error": null
-            }));
-    });
-
     // Mock for delete request
     let delete_mock = server.mock(|when, then| {
         when.method(POST).path("/").json_body(json!({
@@ -240,10 +221,9 @@ fn test_delete_deck() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let result = client.decks().delete(DeckId(1494723142473_u64), true);
+    let result = client.decks().delete("Japanese::JLPT N5", true);
 
     // Assert
-    get_decks_mock.assert();
     delete_mock.assert();
     assert!(result.is_ok());
 
@@ -392,31 +372,13 @@ fn test_get_stats() -> Result<()> {
     // Arrange
     let server = MockServer::start();
 
-    // Mock for getting all decks
-    let deck_names_mock = server.mock(|when, then| {
-        when.method(POST).path("/").json_body(json!({
-            "action": "deckNamesAndIds",
-            "version": 6
-        }));
-
-        then.status(200)
-            .header("content-type", "application/json")
-            .json_body(json!({
-                "result": {
-                    "Default": 1,
-                    "Japanese::Vocabulary": 1494723142483_u64
-                },
-                "error": null
-            }));
-    });
-
     // Mock for stats request
     let stats_mock = server.mock(|when, then| {
         when.method(POST).path("/").json_body(json!({
             "action": "getDeckStats",
             "version": 6,
             "params": {
-                "decks": ["Japanese::Vocabulary"]
+                "decks": ["Japanese::Reading"]
             }
         }));
 
@@ -424,12 +386,14 @@ fn test_get_stats() -> Result<()> {
             .header("content-type", "application/json")
             .json_body(json!({
                 "result": {
-                    "deck_id": 1494723142483_u64,
-                    "new_count": 10,
-                    "learn_count": 5,
-                    "review_count": 25,
-                    "total_in_deck": 40
-                },
+                    "1736956963663": {
+                        "deck_id": 1736956963663_u64,
+                        "name": "Reading",
+                        "new_count": 500,
+                        "learn_count": 3,
+                        "review_count": 127,
+                        "total_in_deck": 13788
+                    }},
                 "error": null
             }));
     });
@@ -437,43 +401,24 @@ fn test_get_stats() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let stats = client.decks().get_stats(DeckId(1494723142483));
+    let stats = client.decks().get_stat("Japanese::Reading");
 
     // Assert
-    deck_names_mock.assert();
     stats_mock.assert();
     let stats = stats?;
-    assert_eq!(stats.deck_id, 1494723142483);
-    assert_eq!(stats.new_count, 10);
-    assert_eq!(stats.learn_count, 5);
-    assert_eq!(stats.review_count, 25);
-    assert_eq!(stats.total_in_deck, 40);
+    assert_eq!(stats.deck_id, 1736956963663_u64);
+    assert_eq!(stats.new_count, 500);
+    assert_eq!(stats.learn_count, 3);
+    assert_eq!(stats.review_count, 127);
+    assert_eq!(stats.total_in_deck, 13788);
 
     Ok(())
 }
 
 #[test]
-fn test_get_cards() -> Result<()> {
+fn test_get_cards_in_deck() -> Result<()> {
     // Arrange
     let server = MockServer::start();
-
-    // Mock for getting all decks
-    server.mock(|when, then| {
-        when.method(POST).path("/").json_body(json!({
-            "action": "deckNamesAndIds",
-            "version": 6
-        }));
-
-        then.status(200)
-            .header("content-type", "application/json")
-            .json_body(json!({
-                "result": {
-                    "Default": 1,
-                    "Japanese::Vocabulary": 1494723142483_u64
-                },
-                "error": null
-            }));
-    });
 
     // Mock for findCards request
     let cards_mock = server.mock(|when, then| {
@@ -481,7 +426,7 @@ fn test_get_cards() -> Result<()> {
             "action": "findCards",
             "version": 6,
             "params": {
-                "deck": "Japanese::Vocabulary"
+                "query":"deck:Japanese\\:\\:Vocabulary"
             }
         }));
 
@@ -496,10 +441,11 @@ fn test_get_cards() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let cards = client.decks().get_cards_in_deck(DeckId(1494723142483))?;
+    let cards = client.decks().get_cards_in_deck("Japanese::Vocabulary");
 
     // Assert
     cards_mock.assert();
+    let cards = cards?;
     assert_eq!(cards.len(), 3);
     assert_eq!(cards[0].0, 1111111);
     assert_eq!(cards[1].0, 2222222);
@@ -545,23 +491,6 @@ fn test_deck_not_found_error() -> Result<()> {
     // Arrange
     let server = MockServer::start();
 
-    // Mock for getting all decks
-    let deck_names_mock = server.mock(|when, then| {
-        when.method(POST).path("/").json_body(json!({
-            "action": "deckNamesAndIds",
-            "version": 6
-        }));
-
-        then.status(200)
-            .header("content-type", "application/json")
-            .json_body(json!({
-                "result": {
-                    "Default": 1
-                },
-                "error": null
-            }));
-    });
-
     // Mock for getDeckStats request with error
     let deck_stats_mock = server.mock(|when, then| {
         when.method(POST).path("/").json_body(json!({
@@ -583,10 +512,9 @@ fn test_deck_not_found_error() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let result = client.decks().get_stats(DeckId(1));
+    let result = client.decks().get_stat("Default");
 
     // Assert
-    deck_names_mock.assert();
     deck_stats_mock.assert();
     let err = result.unwrap_err();
     assert!(matches!(

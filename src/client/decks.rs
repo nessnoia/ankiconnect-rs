@@ -90,14 +90,9 @@ impl DeckClient {
     ///
     /// * `deck_id` - The ID of the deck to delete
     /// * `cards_too` - Whether to delete the cards in the deck as well
-    pub fn delete(&self, deck_id: DeckId, cards_too: bool) -> Result<()> {
-        // First, find the name of the deck
-        let deck = self.get_by_id(deck_id)?.ok_or_else(|| {
-            AnkiError::ValidationError(format!("Deck with ID {} not found", deck_id.0))
-        })?;
-
+    pub fn delete(&self, deck_name: &str, cards_too: bool) -> Result<()> {
         let params = request::DeleteDeckParams {
-            decks: &[deck.name()],
+            decks: &[deck_name],
             cards_too,
         };
 
@@ -132,7 +127,7 @@ impl DeckClient {
     ///
     /// # Arguments
     ///
-    /// * `deck_id` - The ID of the deck to get statistics for
+    /// * `deck_name` - The name of the deck to get statistics for
     ///
     /// # Returns
     ///
@@ -155,11 +150,11 @@ impl DeckClient {
     ///
     /// # Arguments
     ///
-    /// * `deck_id` - The ID of the deck to get statistics for
+    /// * `deck_names` - The names of the decks to get statistics for
     ///
     /// # Returns
     ///
-    /// Statistics for the deck
+    /// A Hashmap mapping the ids of the decks to their statistics
     pub fn get_stats(&self, deck_names: &[&str]) -> Result<HashMap<String, DeckStats>> {
         let params = request::DeckStatsParams { decks: deck_names };
 

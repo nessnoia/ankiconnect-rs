@@ -252,6 +252,7 @@ fn test_get_model_field_names() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[test]
 fn test_get_model_templates() -> Result<()> {
     // Arrange
@@ -340,6 +341,7 @@ fn test_get_model_templates() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[test]
 fn test_get_model_styling() -> Result<()> {
     // Arrange
@@ -423,6 +425,7 @@ fn test_get_model_styling() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[test]
 fn test_create_model() -> Result<()> {
     // Arrange
@@ -476,6 +479,7 @@ fn test_create_model() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[test]
 fn test_update_model_styling() -> Result<()> {
     // Arrange

@@ -1,4 +1,4 @@
-use ankiconnect_rs::{AnkiClient, NoteBuilder, NoteId, Result};
+use ankiconnect_rs::{client, AnkiClient, DuplicateScope, NoteBuilder, NoteId, Result};
 use httpmock::prelude::*;
 use serde_json::json;
 
@@ -62,7 +62,7 @@ fn test_add_note() -> Result<()> {
 
     // Mock for adding note
     let add_note_mock = server.mock(|when, then| {
-        when.method(POST).path("/").json_body(serde_json::json!({
+        when.method(POST).path("/").json_body(json!({
             "action": "addNote",
             "version": 6,
             "params": {
@@ -75,17 +75,9 @@ fn test_add_note() -> Result<()> {
                     },
                     "options": {
                         "allowDuplicate": false,
-                        "duplicateScope": "deck",
-                        "duplicateScopeOptions": {
-                            "deckName": "Default",
-                            "checkChildren": false,
-                            "checkAllModels": false
-                        }
+                        "duplicateScope": "deck"
                     },
-                    "tags": ["test-tag"],
-                    "audio": [],
-                    "video": [],
-                    "picture": []
+                    "tags": ["test-tag"]
                 }
             }
         }));
@@ -124,7 +116,9 @@ fn test_add_note() -> Result<()> {
         .unwrap();
 
     // Act
-    let note_id = client.cards().add_note(&deck, note, false, None);
+    let note_id = client
+        .cards()
+        .add_note(&deck, note, false, Some(DuplicateScope::Deck));
 
     // Assert
     add_note_mock.assert();

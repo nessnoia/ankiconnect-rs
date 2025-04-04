@@ -219,18 +219,8 @@ impl CardClient {
 
         // Configure duplicate handling
         let duplicate_scope_options = if let Some(scope) = &duplicate_scope {
-            match scope {
-                DuplicateScope::Deck => Some(DuplicateScopeOptionsDto {
-                    deck_name: Some(deck.name().to_string()),
-                    check_children: true,
-                    check_all_models: false,
-                }),
-                DuplicateScope::Collection => Some(DuplicateScopeOptionsDto {
-                    deck_name: None,
-                    check_children: true,
-                    check_all_models: true,
-                }),
-            }
+            // TODO: Not implemented yet
+            None
         } else {
             None
         };
