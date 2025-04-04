@@ -27,10 +27,21 @@ impl<T> AnkiConnectResponse<T> {
         } else if let Some(result) = self.result {
             Ok(result)
         } else {
-            Err(AnkiConnectError::Other(
-                "Both result and error are null. Probably a bug in AnkiConnect".to_string(),
-            )
-            .into())
+            Err(AnkiRequestError::AnkiConnectError(AnkiConnectError::Other(
+                "Both result and error are null".to_string(),
+            )))
+        }
+    }
+}
+
+impl AnkiConnectResponse<()> {
+    pub fn into_result(self) -> Result<(), AnkiRequestError> {
+        if let Some(error) = self.error {
+            let anki_error = parse_anki_connect_error(&error);
+            Err(anki_error.into())
+        } else {
+            // For unit type, both None values is treated as success
+            Ok(())
         }
     }
 }
