@@ -8,8 +8,8 @@ use crate::http::{HttpRequestSender, RequestSender};
 use crate::models::{CardId, Deck, Note, NoteId};
 
 use super::request::{
-    self, AddNoteOptions, AddNoteParams, CardsReordering, DuplicateScopeDto,
-    DuplicateScopeOptionsDto, FindCardsParams, GuiBrowseParams, Media, NoteDto,
+    self, AddNoteOptions, AddNoteParams, CardsReordering, DuplicateScopeDto, FindCardsParams,
+    GuiBrowseParams, Media, NoteDto,
 };
 
 /// Client for card-related operations
@@ -218,7 +218,7 @@ impl CardClient {
         }
 
         // Configure duplicate handling
-        let duplicate_scope_options = if let Some(scope) = &duplicate_scope {
+        let duplicate_scope_options = if let Some(_scope) = &duplicate_scope {
             // TODO: Not implemented yet
             None
         } else {

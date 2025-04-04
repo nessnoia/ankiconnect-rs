@@ -1,5 +1,4 @@
-use ankiconnect_rs::{AnkiClient, Deck, DeckId, Result};
-use std::error::Error;
+use ankiconnect_rs::{AnkiClient, Deck, Result};
 
 fn main() -> Result<()> {
     // Create a client with default connection (localhost:8765)

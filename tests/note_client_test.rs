@@ -1,4 +1,4 @@
-use ankiconnect_rs::{client, AnkiClient, DuplicateScope, NoteBuilder, NoteId, Result};
+use ankiconnect_rs::{AnkiClient, DuplicateScope, NoteBuilder, NoteId, Result};
 use httpmock::prelude::*;
 use serde_json::json;
 

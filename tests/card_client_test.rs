@@ -1,5 +1,5 @@
 use ankiconnect_rs::builders::Query;
-use ankiconnect_rs::{AnkiClient, QueryBuilder, Result};
+use ankiconnect_rs::{AnkiClient, Result};
 use httpmock::prelude::*;
 use serde_json::json;
 

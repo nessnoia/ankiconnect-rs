@@ -1,5 +1,4 @@
 use ankiconnect_rs::{AnkiClient, Model, Result};
-use std::error::Error;
 
 fn main() -> Result<()> {
     // Create a client with default connection (localhost:8765)
