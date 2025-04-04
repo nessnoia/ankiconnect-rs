@@ -1,18 +1,3 @@
-Looking at your code base, yes, I think you should update your README.md. The current README has a good structure, but there are several improvements that could make it more informative and aligned with your actual API:
-
-1. **Update the example code**: The current example doesn't match your actual API structure with the domain-specific clients (`client.decks()`, `client.models()`, etc.)
-
-2. **Align with actual API**: The example uses types like `AnkiDeck` and `AnkiCardBuilder` which don't match your implemented types (`Deck`, `NoteBuilder`, etc.)
-
-3. **Add installation instructions**: There's no section on how to add the crate to a Cargo.toml file
-
-4. **More detailed API overview**: A brief section explaining the client structure would help users understand your design
-
-5. **Link to examples**: You have good examples in the examples directory that could be referenced
-
-Here's my suggested updated README.md:
-
-```markdown
 [![Crates.io](https://img.shields.io/crates/v/ankiconnect-rs.svg)](https://crates.io/crates/ankiconnect-rs)
 [![Documentation](https://docs.rs/ankiconnect-rs/badge.svg)](https://docs.rs/ankiconnect-rs/)
 [![Codecov](https://codecov.io/github/btrkeks/ankiconnect-rs/coverage.svg?branch=master)](https://codecov.io/gh/btrkeks/ankiconnect-rs)
