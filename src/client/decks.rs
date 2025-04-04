@@ -1,12 +1,12 @@
 //! Client for Anki deck operations
 
+use super::request::{self, CreateDeckParams, DeckConfigsResult, DeckTreeNode};
 use crate::error::{AnkiError, Result};
 use crate::http::{HttpRequestSender, RequestSender};
 use crate::models::{CardId, Deck, DeckConfig, DeckId, DeckStats};
+use crate::QueryBuilder;
 use std::collections::HashMap;
 use std::sync::Arc;
-use crate::QueryBuilder;
-use super::request::{self, CreateDeckParams, DeckConfigsResult, DeckTreeNode};
 
 /// Client for deck-related operations
 pub struct DeckClient {
@@ -179,7 +179,9 @@ impl DeckClient {
     /// A list of card IDs in the deck
     pub fn get_cards_in_deck(&self, deck_name: &str) -> Result<Vec<CardId>> {
         let query = QueryBuilder::new().in_deck(deck_name).build();
-        let params = request::FindCardsParams { query: query.as_str() };
+        let params = request::FindCardsParams {
+            query: query.as_str(),
+        };
         let ids = self.sender.send::<_, Vec<u64>>("findCards", Some(params))?;
         Ok(ids.into_iter().map(CardId).collect())
     }

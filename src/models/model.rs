@@ -107,14 +107,16 @@ impl Model {
 
     /// Gets the "front" field as a FieldRef if it can be determined
     pub fn front_field(&self) -> Option<FieldRef<'_>> {
-        self.fields.iter()
+        self.fields
+            .iter()
             .find(|f| f.is_front())
             .map(|field| FieldRef { model: self, field })
     }
 
     /// Gets the "back" field as a FieldRef if it can be determined
     pub fn back_field(&self) -> Option<FieldRef<'_>> {
-        self.fields.iter()
+        self.fields
+            .iter()
             .find(|f| f.is_back())
             .map(|field| FieldRef { model: self, field })
     }

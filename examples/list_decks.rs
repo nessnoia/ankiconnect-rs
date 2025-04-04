@@ -30,7 +30,7 @@ fn main() -> Result<()> {
                 println!("      - Cards in learning: {}", stats.learn_count);
                 println!("      - Cards for review: {}", stats.review_count);
                 println!("      - Total cards: {}", stats.total_in_deck);
-            },
+            }
             Err(e) => {
                 println!("   Statistics: Not available ({})", e);
             }
@@ -52,7 +52,7 @@ fn main() -> Result<()> {
                         println!("      ... and {} more", cards.len() - 3);
                     }
                 }
-            },
+            }
             Err(e) => {
                 println!("   Cards: Could not retrieve ({})", e);
             }
@@ -66,7 +66,7 @@ fn main() -> Result<()> {
     match client.decks().get_tree() {
         Ok(tree) => {
             print_deck_tree(&tree, 0);
-        },
+        }
         Err(e) => {
             println!("Could not retrieve deck tree: {}", e);
         }
@@ -94,11 +94,12 @@ fn print_deck_tree(nodes: &[ankiconnect_rs::client::request::DeckTreeNode], inde
     for node in nodes {
         // Print with proper indentation to show hierarchy
         let indent_str = "  ".repeat(indent);
-        println!("{}{}└─ {} (ID: {})",
-                 indent_str,
-                 if indent > 0 { "" } else { "" },
-                 node.name,
-                 node.id
+        println!(
+            "{}{}└─ {} (ID: {})",
+            indent_str,
+            if indent > 0 { "" } else { "" },
+            node.name,
+            node.id
         );
 
         // Recursively print children

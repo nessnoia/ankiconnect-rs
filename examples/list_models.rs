@@ -25,7 +25,12 @@ fn main() -> Result<()> {
 }
 
 fn print_model_details(index: usize, model: &Model) {
-    println!("\n{}. Model: {} (ID: {})", index, model.name(), model.id().0);
+    println!(
+        "\n{}. Model: {} (ID: {})",
+        index,
+        model.name(),
+        model.id().0
+    );
 
     // Print field information
     println!("   Fields ({}):", model.fields().len());

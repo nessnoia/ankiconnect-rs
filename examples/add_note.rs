@@ -1,6 +1,6 @@
-use ankiconnect_rs::{AnkiClient, NoteBuilder, MediaSource};
-use std::io::{self, Write};
+use ankiconnect_rs::{AnkiClient, MediaSource, NoteBuilder};
 use anyhow::anyhow;
+use std::io::{self, Write};
 
 fn main() -> anyhow::Result<()> {
     // Create a client with default connection (localhost:8765)
@@ -66,12 +66,14 @@ fn main() -> anyhow::Result<()> {
             .with_field(back_field, "A friendly animal that makes a good pet.")
             .with_image(
                 back_field,
-                MediaSource::Url("https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_640.jpg".to_string()),
-                "example_dog.jpg"
+                MediaSource::Url(
+                    "https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_640.jpg"
+                        .to_string(),
+                ),
+                "example_dog.jpg",
             );
         println!("Added content to the back field: {}", back_field.name());
-    }
-    else {
+    } else {
         println!("Could not determine a back field for the selected model.");
     }
 
@@ -99,9 +101,7 @@ fn read_user_choice(max_value: usize) -> anyhow::Result<usize> {
     })?;
 
     if index < 1 || index > max_value {
-        return Err(
-            anyhow!("Please enter a number between 1 and {}", max_value)
-        );
+        return Err(anyhow!("Please enter a number between 1 and {}", max_value));
     }
 
     Ok(index)
