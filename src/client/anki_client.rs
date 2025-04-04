@@ -31,21 +31,6 @@ impl AnkiClient {
         }
     }
 
-    /// Creates a new client with a custom request sender
-    ///
-    /// This is particularly useful for testing, allowing you to mock the
-    /// AnkiConnect server responses.
-    // pub fn with_request_sender<T: RequestSender + 'static>(sender: T) -> Self {
-    //     let sender = Arc::new(sender);
-    //
-    //     Self {
-    //         cards_client: CardClient::new(Arc::clone(&sender)),
-    //         decks_client: DeckClient::new(Arc::clone(&sender)),
-    //         media_client: MediaClient::new(Arc::clone(&sender)),
-    //         models_client: ModelClient::new(sender),
-    //     }
-    // }
-
     /// Gets the version of the AnkiConnect plugin
     pub fn version(&self) -> Result<u16, AnkiError> {
         self.cards_client.get_version()
