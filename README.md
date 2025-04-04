@@ -25,7 +25,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ankiconnect-rs = "0.1.1"
+ankiconnect-rs = "1.0.0"
 ```
 
 ## Prerequisites
