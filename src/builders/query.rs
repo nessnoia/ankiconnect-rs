@@ -151,7 +151,7 @@ impl QueryBuilder {
     /// Specifies a field to search in using a Field reference
     ///
     /// This must be followed by one of the field content methods like `contains`.
-    pub fn in_field<'a>(mut self, field: &Field) -> FieldQueryBuilder {
+    pub fn in_field(mut self, field: &Field) -> FieldQueryBuilder {
         self.current_field = Some(field.name().to_string());
         FieldQueryBuilder { builder: self }
     }
@@ -160,7 +160,7 @@ impl QueryBuilder {
     ///
     /// This ensures the field actually exists in a model.
     /// This must be followed by one of the field content methods like `contains`.
-    pub fn in_field_ref<'a>(mut self, field_ref: FieldRef<'_>) -> FieldQueryBuilder {
+    pub fn in_field_ref(mut self, field_ref: FieldRef<'_>) -> FieldQueryBuilder {
         self.current_field = Some(field_ref.name().to_string());
         FieldQueryBuilder { builder: self }
     }
@@ -276,7 +276,7 @@ impl QueryBuilder {
         let mut result = String::with_capacity(s.len());
         let mut chars = s.chars();
 
-        while let Some(c) = chars.next() {
+        for c in chars {
             if needs_escape(c) {
                 result.push('\\');
             }

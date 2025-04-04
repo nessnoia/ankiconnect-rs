@@ -93,13 +93,7 @@ fn print_deck_tree(nodes: &[ankiconnect_rs::client::request::DeckTreeNode], inde
     for node in nodes {
         // Print with proper indentation to show hierarchy
         let indent_str = "  ".repeat(indent);
-        println!(
-            "{}{}└─ {} (ID: {})",
-            indent_str,
-            if indent > 0 { "" } else { "" },
-            node.name,
-            node.id
-        );
+        println!("{}└─ {} (ID: {})", indent_str, node.name, node.id);
 
         // Recursively print children
         if node.has_children {

@@ -70,7 +70,7 @@ impl RequestSender for HttpRequestSender {
         // Send the request to AnkiConnect
         let mut response = ureq::post(&self.url)
             .send_json(&request)
-            .map_err(|e| AnkiError::HttpError(e.into()))?;
+            .map_err(AnkiError::HttpError)?;
 
         // Parse the response
         let anki_response: AnkiConnectResponse<R> = response
@@ -98,8 +98,7 @@ fn handle_empty_response<R: 'static>() -> Result<R, AnkiError> {
         // This is safe because we've verified that R is ()
         // We need this because Rust doesn't allow us to directly return Ok(())
         // when the function expects to return Result<R, _>
-        let result = Ok(unsafe { std::mem::zeroed() });
-        result
+        Ok(unsafe { std::mem::zeroed() })
     } else {
         Err(AnkiError::AnkiConnectError(AnkiConnectError::Other(
             "Empty response from AnkiConnect (both result and error are null)".to_string(),
