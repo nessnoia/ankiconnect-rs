@@ -179,13 +179,33 @@ impl CardClient {
     ///
     /// # Arguments
     ///
-    /// * `note_id` - The ID of the note to get info for
+    /// * `note_ids` - The IDs of the notes to get info for
     ///
     /// # Returns
     ///
     /// Detailed information about the note
-    pub fn get_note_info(&self, note_id: NoteId) -> Result<request::NoteInfo> {
-        let params = request::NoteIdParam { note: note_id.0 };
+    pub fn get_notes_info_by_id(&self, note_ids: Vec<NoteId>) -> Result<Vec<request::NoteInfo>> {
+        let params = request::NoteIdsParam {
+            notes: Some(note_ids.iter().map(|id| id.value()).collect()),
+            query: None,
+        };
+        self.sender.send("notesInfo", Some(params))
+    }
+
+    /// Gets info about the notes found with the query
+    ///
+    /// # Arguments
+    ///
+    /// * `query` - The query to get matching notes for
+    ///
+    /// # Returns
+    ///
+    /// Detailed information about the notes that match the query
+    pub fn get_notes_info(&self, query: &Query) -> Result<Vec<request::NoteInfo>> {
+        let params = request::NoteIdsParam {
+            notes: None,
+            query: Some(query.to_string()),
+        };
         self.sender.send("notesInfo", Some(params))
     }
 

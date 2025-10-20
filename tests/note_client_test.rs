@@ -171,32 +171,34 @@ fn test_find_notes() -> Result<()> {
 }
 
 #[test]
-fn test_get_note_info() -> Result<()> {
+fn test_get_notes_info() -> Result<()> {
     // Arrange
     let server = MockServer::start();
 
     let mock = server.mock(|when, then| {
         when.method(POST).path("/").json_body(json!({
-            "action": "noteInfo",
+            "action": "notesInfo",
             "version": 6,
             "params": {
-                "note": 1502298033753_u64
+                "query": "deck:current",
             }
         }));
 
         then.status(200)
             .header("content-type", "application/json")
             .json_body(json!({
-                "result": {
+                "result": [{
                     "noteId": 1502298033753_u64,
+                    "profile": "User_1",
                     "modelName": "Basic",
                     "tags": ["tag", "another_tag"],
                     "fields": {
                         "Front": {"value": "front content", "order": 0},
                         "Back": {"value": "back content", "order": 1}
                     },
+                    "mod": 1718377864_u64,
                     "cards": [1498938915662_u64]
-                },
+                }],
                 "error": null
             }));
     });
@@ -204,12 +206,69 @@ fn test_get_note_info() -> Result<()> {
     let client = create_mock_client(&server);
 
     // Act
-    let note_info = client.cards().get_note_info(NoteId(1502298033753));
+    let query = QueryBuilder::new().in_deck("current").build();
+    let note_info = client.cards().get_notes_info(&query);
 
     // Assert
     mock.assert();
 
-    let note_info = note_info?;
+    let note_info = &note_info?[0];
+    assert_eq!(note_info.note_id, 1502298033753);
+    assert_eq!(note_info.model_name, "Basic");
+    assert_eq!(note_info.tags, vec!["tag", "another_tag"]);
+    assert_eq!(
+        note_info.fields.get("Front").unwrap().value,
+        "front content"
+    );
+    assert_eq!(note_info.fields.get("Back").unwrap().value, "back content");
+
+    Ok(())
+}
+
+#[test]
+fn test_get_notes_info_by_id() -> Result<()> {
+    // Arrange
+    let server = MockServer::start();
+
+    let mock = server.mock(|when, then| {
+        when.method(POST).path("/").json_body(json!({
+            "action": "notesInfo",
+            "version": 6,
+            "params": {
+                "notes": [1502298033753_u64]
+            }
+        }));
+
+        then.status(200)
+            .header("content-type", "application/json")
+            .json_body(json!({
+                "result": [{
+                    "noteId": 1502298033753_u64,
+                    "profile": "User_1",
+                    "modelName": "Basic",
+                    "tags": ["tag", "another_tag"],
+                    "fields": {
+                        "Front": {"value": "front content", "order": 0},
+                        "Back": {"value": "back content", "order": 1}
+                    },
+                    "mod": 1718377864_u64,
+                    "cards": [1498938915662_u64]
+                }],
+                "error": null
+            }));
+    });
+
+    let client = create_mock_client(&server);
+
+    // Act
+    let note_info = client
+        .cards()
+        .get_notes_info_by_id(vec![NoteId(1502298033753)]);
+
+    // Assert
+    mock.assert();
+
+    let note_info = &note_info?[0];
     assert_eq!(note_info.note_id, 1502298033753);
     assert_eq!(note_info.model_name, "Basic");
     assert_eq!(note_info.tags, vec!["tag", "another_tag"]);

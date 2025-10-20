@@ -104,10 +104,13 @@ pub(crate) struct SetFlagParams {
     pub flag: u8,
 }
 
-/// Parameters for note info
+/// Parameters for notes info
 #[derive(Serialize, Debug)]
-pub(crate) struct NoteIdParam {
-    pub note: u64,
+pub(crate) struct NoteIdsParam {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub notes: Option<Vec<u64>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub query: Option<String>,
 }
 
 /// Response for note info
