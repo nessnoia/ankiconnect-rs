@@ -188,6 +188,14 @@ impl CardClient {
         self.sender.send("noteInfo", Some(params))
     }
 
+    pub fn find_notes(&self, query: &Query) -> Result<Vec<NoteId>> {
+        let params = request::FindNotesParams {
+            query: query.to_string(),
+        };
+        let ids = self.sender.send::<_, Vec<u64>>("findNotes", Some(params))?;
+        Ok(ids.into_iter().map(NoteId).collect())
+    }
+
     /// Converts a domain note to a NoteDto for the API
     fn prepare_note_dto(
         &self,

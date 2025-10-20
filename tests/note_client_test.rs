@@ -1,4 +1,4 @@
-use ankiconnect_rs::{AnkiClient, DuplicateScope, NoteBuilder, NoteId, Result};
+use ankiconnect_rs::{AnkiClient, DuplicateScope, NoteBuilder, NoteId, QueryBuilder, Result};
 use httpmock::prelude::*;
 use serde_json::json;
 
@@ -129,45 +129,44 @@ fn test_add_note() -> Result<()> {
     Ok(())
 }
 
-// #[test]
-// fn test_find_notes() -> Result<()> {
-//     // Arrange
-//     let server = MockServer::start();
-//
-//     let mock = server.mock(|when, then| {
-//         when.method(POST)
-//             .path("/")
-//             .json_body(json!({
-//                 "action": "findNotes",
-//                 "version": 6,
-//                 "params": {
-//                     "query": "deck:current"
-//                 }
-//             }));
-//
-//         then.status(200)
-//             .header("content-type", "application/json")
-//             .json_body(json!({
-//                 "result": [1483959289817, 1483959291695],
-//                 "error": null
-//             }));
-//     });
-//
-//     let client = create_mock_client(&server);
-//
-//     // Act
-//     let notes = client.cards().find_notes("deck:current");
-//
-//     // Assert
-//     mock.assert();
-//
-//     let notes = notes?;
-//     assert_eq!(notes.len(), 2);
-//     assert_eq!(notes[0].value(), 1483959289817);
-//     assert_eq!(notes[1].value(), 1483959291695);
-//
-//     Ok(())
-// }
+#[test]
+fn test_find_notes() -> Result<()> {
+    // Arrange
+    let server = MockServer::start();
+
+    let mock = server.mock(|when, then| {
+        when.method(POST).path("/").json_body(json!({
+            "action": "findNotes",
+            "version": 6,
+            "params": {
+                "query": "deck:current"
+            }
+        }));
+
+        then.status(200)
+            .header("content-type", "application/json")
+            .json_body(json!({
+                "result": [123, 1234],
+                "error": null
+            }));
+    });
+
+    let client = create_mock_client(&server);
+
+    let query = QueryBuilder::new().in_deck("current").build();
+    // Act
+    let notes = client.cards().find_notes(&query);
+
+    // Assert
+    mock.assert();
+
+    let notes = notes?;
+    assert_eq!(notes.len(), 2);
+    assert_eq!(notes[0].value(), 123);
+    assert_eq!(notes[1].value(), 1234);
+
+    Ok(())
+}
 
 #[test]
 fn test_get_note_info() -> Result<()> {
