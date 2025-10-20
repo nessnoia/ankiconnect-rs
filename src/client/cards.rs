@@ -1,5 +1,6 @@
 //! Client for Anki card and note operations
 
+use std::collections::HashMap;
 use std::sync::Arc;
 
 use crate::builders::{Flag, Query};
@@ -185,7 +186,7 @@ impl CardClient {
     /// Detailed information about the note
     pub fn get_note_info(&self, note_id: NoteId) -> Result<request::NoteInfo> {
         let params = request::NoteIdParam { note: note_id.0 };
-        self.sender.send("noteInfo", Some(params))
+        self.sender.send("notesInfo", Some(params))
     }
 
     pub fn find_notes(&self, query: &Query) -> Result<Vec<NoteId>> {
@@ -194,6 +195,20 @@ impl CardClient {
         };
         let ids = self.sender.send::<_, Vec<u64>>("findNotes", Some(params))?;
         Ok(ids.into_iter().map(NoteId).collect())
+    }
+
+    pub fn update_note_fields(
+        &self,
+        note_id: NoteId,
+        fields: HashMap<String, String>,
+    ) -> Result<()> {
+        let params = request::UpdateNoteFieldsParams {
+            id: note_id.value(),
+            fields,
+        };
+
+        self.sender
+            .send("updateNote", Some(HashMap::from([("note", params)])))
     }
 
     /// Converts a domain note to a NoteDto for the API

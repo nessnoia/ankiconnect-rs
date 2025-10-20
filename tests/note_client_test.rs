@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use ankiconnect_rs::{AnkiClient, DuplicateScope, NoteBuilder, NoteId, QueryBuilder, Result};
 use httpmock::prelude::*;
 use serde_json::json;
@@ -220,52 +222,51 @@ fn test_get_note_info() -> Result<()> {
     Ok(())
 }
 
-// #[test]
-// fn test_update_note_fields() -> Result<()> {
-//     // Arrange
-//     let server = MockServer::start();
-//
-//     let mock = server.mock(|when, then| {
-//         when.method(POST)
-//             .path("/")
-//             .json_body(json!({
-//                 "action": "updateNoteFields",
-//                 "version": 6,
-//                 "params": {
-//                     "note": {
-//                         "id": 1514547547030_u64,
-//                         "fields": {
-//                             "Front": "new front content",
-//                             "Back": "new back content"
-//                         },
-//                         "audio": []
-//                     }
-//                 }
-//             }));
-//
-//         then.status(200)
-//             .header("content-type", "application/json")
-//             .json_body(json!({
-//                 "result": null,
-//                 "error": null
-//             }));
-//     });
-//
-//     let client = create_mock_client(&server);
-//
-//     // Act
-//     let mut fields = HashMap::new();
-//     fields.insert("Front".to_string(), "new front content".to_string());
-//     fields.insert("Back".to_string(), "new back content".to_string());
-//
-//     let result = client.cards().update_note(NoteId(1514547547030), fields, None);
-//
-//     // Assert
-//     mock.assert();
-//     assert!(result.is_ok());
-//
-//     Ok(())
-// }
+#[test]
+fn test_update_note_fields() -> Result<()> {
+    // Arrange
+    let server = MockServer::start();
+
+    let mock = server.mock(|when, then| {
+        when.method(POST).path("/").json_body(json!({
+            "action": "updateNote",
+            "version": 6,
+            "params": {
+                "note": {
+                    "id": 1514547547030_u64,
+                    "fields": {
+                        "Front": "new front content",
+                        "Back": "new back content"
+                    },
+                }
+            }
+        }));
+
+        then.status(200)
+            .header("content-type", "application/json")
+            .json_body(json!({
+                "result": null,
+                "error": null
+            }));
+    });
+
+    let client = create_mock_client(&server);
+
+    // Act
+    let mut fields = HashMap::new();
+    fields.insert("Front".to_string(), "new front content".to_string());
+    fields.insert("Back".to_string(), "new back content".to_string());
+
+    let result = client
+        .cards()
+        .update_note_fields(NoteId(1514547547030), fields);
+
+    // Assert
+    mock.assert();
+    assert!(result.is_ok());
+
+    Ok(())
+}
 
 // #[test]
 // fn test_add_tags() -> Result<()> {

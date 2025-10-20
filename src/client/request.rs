@@ -130,7 +130,8 @@ pub struct FieldInfo {
 /// Parameters for updating a note
 #[derive(Serialize, Debug)]
 pub(crate) struct UpdateNoteFieldsParams {
-    note: NoteDto,
+    pub id: u64,
+    pub fields: HashMap<String, String>,
 }
 
 // ------------------
